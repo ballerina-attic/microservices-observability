@@ -14,8 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/test;
 import ballerina/http;
+import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
@@ -38,7 +38,7 @@ function testResourceElizabeth () {
     // Set request payload
     req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP -> post("/elizabeth", req);
+    http:Response response = check clientEP->post("/elizabeth", req);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Hotel reservation service did not respond with 200 OK signal!");

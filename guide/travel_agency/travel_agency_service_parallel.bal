@@ -14,12 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/http;
-// Needed only when user defined observability is being used
-import ballerina/observe;
-import ballerina/log;
 //import ballerinax/docker;
+import ballerina/http;
 //import ballerinax/kubernetes;
+import ballerina/log;
+// Needed only when user defined observability is used
+import ballerina/observe;
 
 //@docker:Config {
 //    registry:"ballerina.guides.io",
@@ -89,7 +89,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
             any => {
                 outResponse.statusCode = 400;
                 outResponse.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
-                _ = client -> respond(outResponse);
+                _ = client->respond(outResponse);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -108,7 +108,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
             vehicleType == null || location == null) {
             outResponse.statusCode = 400;
             outResponse.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
-            _ = client -> respond(outResponse);
+            _ = client->respond(outResponse);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check inRequest.getJsonPayload()!toString());
             done;
         }
@@ -143,9 +143,9 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
                 outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /qatarAirways");
                 // Send a POST request to 'Qatar Airways' and get the results
-                http:Response respWorkerQatar = check airlineEP -> post("/qatarAirways", outReq);
+                http:Response respWorkerQatar = check airlineEP->post("/qatarAirways", outReq);
                 // Reply to the join block from this worker - Send the response from 'Qatar Airways'
-                respWorkerQatar -> fork;
+                respWorkerQatar->fork;
             }
 
             // Worker to communicate with airline 'Asiana'
@@ -155,9 +155,9 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
                 outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /asiana");
                 // Send a POST request to 'Asiana' and get the results
-                http:Response respWorkerAsiana = check airlineEP -> post("/asiana", outReq);
+                http:Response respWorkerAsiana = check airlineEP->post("/asiana", outReq);
                 // Reply to the join block from this worker - Send the response from 'Asiana'
-                respWorkerAsiana -> fork;
+                respWorkerAsiana->fork;
             }
 
             // Worker to communicate with airline 'Emirates'
@@ -233,7 +233,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
         driveSgRequest.setJsonPayload(untaint vehiclePayload, contentType = "application/json");
         log:printDebug("Sending request to : /driveSg");
         // Send a POST request to 'DriveSg' and get the results
-        http:Response driveSgResponse = check carRentalEP -> post("/driveSg", driveSgRequest);
+        http:Response driveSgResponse = check carRentalEP->post("/driveSg", driveSgRequest);
         jsonVehicleResponse = check driveSgResponse.getJsonPayload();
         log:printDebug("Vehicle response : " + jsonVehicleResponse.toString());
 
@@ -245,7 +245,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
         elizabethRequest.setJsonPayload(untaint hotelPayload, contentType = "application/json");
         log:printDebug("Sending request to : /elizabeth");
         // Send a POST request to 'Elizabeth' and get the results
-        http:Response elizabethResponse = check hotelEP -> post("/elizabeth", elizabethRequest);
+        http:Response elizabethResponse = check hotelEP->post("/elizabeth", elizabethRequest);
         jsonHotelResponse = check elizabethResponse.getJsonPayload();
         log:printDebug("Hotel response : " + jsonHotelResponse.toString());
 
@@ -260,6 +260,6 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
         log:printDebug("Client response : " + clientResponse.toString());
         outResponse.setJsonPayload(untaint clientResponse);
         // Send the response to the client
-        _ = client -> respond(outResponse);
+        _ = client->respond(outResponse);
     }
 }

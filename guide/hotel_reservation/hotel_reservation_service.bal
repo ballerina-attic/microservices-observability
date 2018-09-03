@@ -14,10 +14,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/http;
-import ballerina/log;
 //import ballerinax/docker;
+import ballerina/http;
 //import ballerinax/kubernetes;
+import ballerina/log;
 
 //@docker:Config {
 //    registry:"ballerina.guides.io",
@@ -73,7 +73,7 @@ service<http:Service> hotelReservationService bind hotelEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
-                _ = caller -> respond(response);
+                _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -87,7 +87,7 @@ service<http:Service> hotelReservationService bind hotelEP {
         if (arrivalDate == null || departureDate == null || location == null) {
             response.statusCode = 400;
             response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
-            _ = caller -> respond(response);
+            _ = caller->respond(response);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check request.getJsonPayload()!toString());
             done;
         }
@@ -105,6 +105,6 @@ service<http:Service> hotelReservationService bind hotelEP {
         log:printDebug("Client response : " + hotelDetails.toString());
         response.setJsonPayload(untaint hotelDetails);
         // Send the response to the caller
-        _ = caller -> respond(response);
+        _ = caller->respond(response);
     }
 }

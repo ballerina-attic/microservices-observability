@@ -14,12 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
+//import ballerinax/docker;
 import ballerina/http;
+//import ballerinax/kubernetes;
+import ballerina/log;
 import ballerina/mysql;
 import ballerina/sql;
-import ballerina/log;
-//import ballerinax/docker;
-//import ballerinax/kubernetes;
 
 //@docker:Config {
 //    registry:"ballerina.guides.io",
@@ -75,7 +75,7 @@ service<http:Service> carRentalService bind carEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
-                _ = caller -> respond(response);
+                _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -90,7 +90,7 @@ service<http:Service> carRentalService bind carEP {
         if (arrivalDate == null || departureDate == null || vehicleType == null) {
             response.statusCode = 400;
             response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
-            _ = caller -> respond(response);
+            _ = caller->respond(response);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check request.getJsonPayload()!toString());
             done;
         }
@@ -101,7 +101,7 @@ service<http:Service> carRentalService bind carEP {
         log:printDebug("Client response : " + carDetails.toString());
         response.setJsonPayload(carDetails);
         // Send the response to the caller
-        _ = caller -> respond(response);
+        _ = caller->respond(response);
     }
 }
 
@@ -137,7 +137,7 @@ function carDBService (string company, string departureDate, string arrivalDate,
     string q = "SELECT * FROM CARS WHERE company = ? AND departureDate = ? AND arrivalDate = ? AND vehicleType = ?";
     log:printDebug("carDBService query : " + q);
     // Perform the SELECT operation on carDB endpoint
-    var temp = carDB -> select(q, Car, p1, p2, p3, p4);
+    var temp = carDB->select(q, Car, p1, p2, p3, p4);
     table<Car> cars = check temp;
     Car car = {};
     foreach i in cars {

@@ -14,8 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/test;
 import ballerina/http;
+import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
@@ -38,7 +38,7 @@ function testResourceFlightQatar () {
     // Set request payload
     req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP -> post("/qatarAirways", req);
+    http:Response response = check clientEP->post("/qatarAirways", req);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");
@@ -57,7 +57,7 @@ function testResourceFlightAsiana () {
     // Set request payload
     req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP -> post("/asiana", req);
+    http:Response response = check clientEP->post("/asiana", req);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");
@@ -76,7 +76,7 @@ function testResourceFlightEmirates () {
     // Set request payload
     req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP -> post("/emirates", req);
+    http:Response response = check clientEP->post("/emirates", req);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");

@@ -15,8 +15,8 @@
 // under the License.
 
 //import ballerinax/docker;
-//import ballerinax/kubernetes;
 import ballerina/http;
+//import ballerinax/kubernetes;
 import ballerina/log;
 import ballerina/mysql;
 import ballerina/observe;
@@ -77,7 +77,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
-                _ = caller -> respond(response);
+                _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
