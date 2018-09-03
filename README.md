@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ballerina-guides/ballerina-observability-guide.svg?branch=master)](https://travis-ci.org/ballerina-guides/ballerina-observability-guide)
+[![Build Status](https://travis-ci.org/ballerina-guides/microservices-observability.svg?branch=master)](https://travis-ci.org/ballerina-guides/microservices-observability)
 
-# Observing Ballerina Services
+# Observing Ballerina Microservices
 
 Observability of services is useful to retrieve internal information for easier troubleshooting and system status analysis. Ballerina allows to observe its services using Monitoring, Logging and Distributed tracing methods, with the use of other external tools.
 
@@ -64,7 +64,7 @@ source resources/mysql.sql;
 
 ### Invoking the service
 
-- Navigate to `ballerina-observability-guide/guide` and run the following commands in separate terminals to start all four HTTP services. This will start the `Airline Reservation`, `Hotel Reservation`, `Car Rental` and `Travel Agency` services in ports 9091, 9092, 9093 and 9090 respectively.
+- Navigate to `microservices-observability/guide` and run the following commands in separate terminals to start all four HTTP services. This will start the `Airline Reservation`, `Hotel Reservation`, `Car Rental` and `Travel Agency` services in ports 9091, 9092, 9093 and 9090 respectively.
 
 ```bash
    $ ballerina run travel_agency/
@@ -107,7 +107,7 @@ Note that we are overridng the prometheus port by passing the parameter (`-e b7a
     }
 ```
 ## Observability 
-Ballerina is by default observable. Meaning, you can easily observe your services, resources, etc. Observability configurations are defined in the `ballerina.conf` file. A sample configuration file can be found in `ballerina-observability-guide/guide/` directory.
+Ballerina is by default observable. Meaning, you can easily observe your services, resources, etc. Observability configurations are defined in the `ballerina.conf` file. A sample configuration file can be found in `microservices-observability/guide/` directory.
 ```ballerina
 [b7a.log]
 level="DEBUG"
@@ -118,7 +118,7 @@ To start the ballerina services using the configuration file, run the following 
 ```
    $ ballerina run --config travel_agency/ballerina.conf <package_name>
 ```
-When you execute the ```ballerina run``` command from the ```ballerina-observability-guide/guide/``` location (where the `ballerina.conf` file is), the configuration file will get applied to every service that you are starting. Therefore, you don't need to pass the `--config` argument explicitly.
+When you execute the ```ballerina run``` command from the ```microservices-observability/guide/``` location (where the `ballerina.conf` file is), the configuration file will get applied to every service that you are starting. Therefore, you don't need to pass the `--config` argument explicitly.
 
 ### Tracing 
 You can monitor ballerina services using in built tracing capabilities of Ballerina. We'll use [Jaeger](https://github.com/jaegertracing/jaeger) as the distributed tracing system.
@@ -211,12 +211,12 @@ Follow the below steps to set up Prometheus and view metrics Ballerina services.
 ### Logging
 Ballerina has a log package for logging to the console. You can import ballerina/log package and start logging. The following section will describe how to search, analyze, and visualize logs in real time using Elastic Stack.
 
-- Start the Ballerina Service with the following command from `ballerina-observability-guide/guide`
+- Start the Ballerina Service with the following command from `microservices-observability/guide`
 ```
    nohup ballerina run travel_agency/ &>> ballerina.log&
 ```
 
-NOTE: This will write the console log to the `ballerina.log` file in the `ballerina-observability-guide/guide` directory
+NOTE: This will write the console log to the `ballerina.log` file in the `microservices-observability/guide` directory
 
 - Start Elasticsearch using the following command
 ```
@@ -406,7 +406,7 @@ You can deploy the services using any of the methods listed below.
 
 ### Deploying locally
 
-- As the first step, you can build Ballerina executable archives (.balx) of the services that we developed above. Navigate to `ballerina-observability-guide/guide` and run the following command. 
+- As the first step, you can build Ballerina executable archives (.balx) of the services that we developed above. Navigate to `microservices-observability/guide` and run the following command. 
 ```bash
    $ ballerina build <Package_Name>
 ```
@@ -452,7 +452,7 @@ endpoint http:Listener travelAgencyEP {
 service<http:Service> travelAgencyService bind travelAgencyEP {
 ``` 
 
-- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding docker image using the docker annotations that you have configured above. Navigate to `ballerina-observability-guide/guide` and run the following command.  
+- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding docker image using the docker annotations that you have configured above. Navigate to `microservices-observability/guide` and run the following command.  
   
 ```
    $ ballerina build travel_agency
