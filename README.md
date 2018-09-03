@@ -57,8 +57,6 @@ Please refer to the [Prerequisites](#prerequisites) section for information on s
 Create the database using the script provided in resources directory. This datbase is being used by the services to retrieve data.
 ```sql
 mysql -u <username> -p
-```
-```sql
 source resources/mysql.sql;
 ```
 
@@ -78,8 +76,8 @@ source resources/mysql.sql;
 ```bash
    $ ballerina run -e b7a.observability.metrics.prometheus.port=9799 car_rental/
 ```
-Note that we are overridng the prometheus port by passing the parameter (`-e b7a.observability.metrics.prometheus.port=xxxx`) for all the services, except the travel_agency service. Travel agency service will publish the metrics data on the port defined in the `ballerina.conf` file (9796). This will avoid any conflicts on port being already occupied.
-- Invoke the travel agency service by sending a POST request to arrange a tour.
+Note that we are overridng the prometheus port by passing the parameter (`-e b7a.observability.metrics.prometheus.port=xxxx`) for all the services, except the travel_agency service. Travel agency service will publish the metrics data on the default port defined in the `ballerina.conf` file (9796). This will avoid any conflicts on port being already occupied.
+- Invoke the Travel Agency service by sending a POST request to arrange a tour.
 
 ```bash
    curl -v -X POST -d \
@@ -88,7 +86,7 @@ Note that we are overridng the prometheus port by passing the parameter (`-e b7a
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json" 
 ```
 
-- Travel agency service will send a response similar to the following:
+- Travel Agency service will send a response similar to the following:
     
 ```bash
    HTTP/1.1 200 OK
@@ -114,14 +112,14 @@ level="DEBUG"
 ```
 Define the log level for the Ballerina services.
 
-To start the ballerina services using the configuration file, run the following command
+To start the Ballerina services using the configuration file, run the following command
 ```
    $ ballerina run --config travel_agency/ballerina.conf <package_name>
 ```
 When you execute the ```ballerina run``` command from the ```microservices-observability/guide/``` location (where the `ballerina.conf` file is), the configuration file will get applied to every service that you are starting. Therefore, you don't need to pass the `--config` argument explicitly.
 
 ### Tracing 
-You can monitor ballerina services using in built tracing capabilities of Ballerina. We'll use [Jaeger](https://github.com/jaegertracing/jaeger) as the distributed tracing system.
+You can monitor Ballerina services using in-built tracing capabilities of Ballerina. We'll use [Jaeger](https://github.com/jaegertracing/jaeger) as the distributed tracing system.
 Follow the below steps to use tracing with Ballerina.
 - Add below configurations to the `ballerina.conf` file
 ```
@@ -140,7 +138,7 @@ reporter.log.spans=true
 reporter.max.buffer.spans=1000
 ```
 
-- Run Jaeger docker image using the following command. (If you haven't already started Jaeger as instructed in the [prerequisites](#prerequisites) section)
+- Run Jaeger Docker image using the following command. (If you haven't already started Jaeger as instructed in the [prerequisites](#prerequisites) section)
 ```bash
    $ docker run -d -p5775:5775/udp -p6831:6831/udp -p6832:6832/udp -p5778:5778 \
    -p16686:16686 p14268:14268 jaegertracing/all-in-one:latest
@@ -157,8 +155,8 @@ reporter.max.buffer.spans=1000
  
 
 ### Metrics
-Metrics and alerts are built-in with ballerina. We will use Prometheus as the monitoring tool.
-Follow the below steps to set up Prometheus and view metrics Ballerina services.
+Metrics and Alerts are built-in with Ballerina. We will use Prometheus as the monitoring tool.
+Follow the below steps to set up Prometheus and view metrics for Ballerina services.
 
 - Set the below configurations in the `ballerina.conf` file.
 ```
@@ -172,7 +170,7 @@ Follow the below steps to set up Prometheus and view metrics Ballerina services.
     port=9796
     host="0.0.0.0"
 ```
-`ballerina.conf` file defines 9796 as the default port on which, ballerina services will publish its metrics information to be consumed by Prometheus. Ballerina will host Travel agency service's metrics on [http://localhost:9796/metrics](http://localhost:9796/metrics) endpoint. For remaining services we define different ports by passing arguments `-e b7a.observability.metrics.prometheus.port=xxxx`. Prometheus scrapes the given target endpoints within defined interval to extract the metrics information, which will then be visualized via Grafana.
+`ballerina.conf` file defines 9796 as the default port on which, Ballerina services will publish its metrics information to be consumed by Prometheus. Ballerina will host Travel agency service's metrics on [http://localhost:9796/metrics](http://localhost:9796/metrics) endpoint. For remaining services we define different ports by passing the argument `-e b7a.observability.metrics.prometheus.port=xxxx`. Prometheus scrapes the given target endpoints within defined interval to extract the metrics information, which will then be visualized via Grafana.
 
 - Create a file `prometheus.yml` inside `/tmp/` location. Add the below configurations to the `prometheus.yml` file.
 ```
@@ -189,15 +187,15 @@ Follow the below steps to set up Prometheus and view metrics Ballerina services.
 
    NOTE : Replace `0.0.0.0` with your local Docker IP, if you are deplyoing the services in Docker. We've added multiple targets with differnt ports as we are publishing data from 4 different services and expect Prometheus to capture them all.
    
-- Run the Prometheus docker image using the following command (If you haven't already started Prometheus as instructed in the [prerequisites](#prerequisites) section. Make sure you've reconfigured `prometheus.yml` file as above to suite this sample)
+- Run the Prometheus Docker image using the following command (If you haven't already started Prometheus as instructed in the [prerequisites](#prerequisites) section. Make sure you've reconfigured `prometheus.yml` file as above to suite this sample)
 ```
    docker run -p 19090:9090 -v /tmp/prometheus.yml:/etc/tmp/prometheus.yml prom/prometheus
 ```
    
 - You can access Prometheus at the following URL
-```
-   http://localhost:19090/
-```
+
+   [http://localhost:19090](http://localhost:19090)
+
 
    NOTE:  Ballerina will by default have following metrics for HTTP server connector. You can enter following expression in Prometheus UI
    
@@ -209,7 +207,7 @@ Follow the below steps to set up Prometheus and view metrics Ballerina services.
    ![promethues screenshot](images/metrics-screenshot.png "Prometheus UI")
 
 ### Logging
-Ballerina has a log package for logging to the console. You can import ballerina/log package and start logging. The following section will describe how to search, analyze, and visualize logs in real time using Elastic Stack.
+Ballerina has a log package for logging to the console. You can import 'allerina/log' package and start logging. The following section will describe how to search, analyze, and visualize logs in real time using Elastic Stack.
 
 - Start the Ballerina Service with the following command from `microservices-observability/guide`
 ```
@@ -232,7 +230,7 @@ NOTE: Linux users might need to run `sudo sysctl -w vm.max_map_count=262144` to 
    docker.elastic.co/kibana/kibana:6.2.2     
 ```
 
-- Configure logstash to format the ballerina logs
+- Configure logstash to format the Ballerina logs
    
 i) Create a file named `logstash.conf` with the following content
 ```
@@ -272,7 +270,7 @@ iii) Start the logstash container, replace the {SAMPLE_ROOT_DIRECTORY} with your
    -p 5044:5044 docker.elastic.co/logstash/logstash:6.2.2
 ```
   
- - Configure filebeat to ship the ballerina logs
+ - Configure filebeat to ship the Ballerina logs
     
    i) Create a file named `filebeat.yml` with the following content
 ```
@@ -294,13 +292,13 @@ iii) Start the logstash container, replace the {SAMPLE_ROOT_DIRECTORY} with your
 ```
 
 - Access Kibana to visualize the logs using following URL
-```
-     http://localhost:5601 
-```
+
+     [http://localhost:5601](http://localhost:5601) 
+
 
 NOTE: You may need to add `store` index pattern to kibana visualization tool to create a log visualization.
     
-- Kibana log visualization for Ballerina observability guide sample
+- Kibana log visualization for Observing Microservices sample
  
      ![logging screenshot](images/logging-screenshot.png "Kibana UI")
      
@@ -313,7 +311,7 @@ All four Ballerina services push tracers to Jaeger on port `5775`. Send a reques
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json" 
 ```
-Access the Jaeger UI `http://localhost:16686`
+Access the Jaeger UI [http://localhost:16686](http://localhost:16686) 
 
 Select `travel_agency:0.0.0.travelAgencyService` service from the services list.
 
@@ -323,7 +321,7 @@ Select `arrangeTour` operation from operations list and then click Find traces.
 
 - Duration against Time graph shows total time taken by each request to respond. You can identify a delay in a selected service at a given time by this.
 - Request count to the selected service and operation is the number of traces.
-- Can filter results further by, Min Duration, Max Duration, Tags. If you want to identify if a service has taken any longer than 500ms to respond, or number of requests that has been succeeded (`http.status_code=200`), can use these filters.
+- You can filter results further by, Min Duration, Max Duration, Tags. If you want to identify if a service has taken any longer than 500ms to respond, or number of requests that has been succeeded (`http.status_code=200`), can use these filters.
 
 Expand a trace : 
 
@@ -364,7 +362,7 @@ Jaeger traces
 
 ![Unavaialbel](images/service-unavailable-trace.png "Service unavaiable")
 
-If we expand this errornous trace, and expand its Spans too, we can identify the unavailable service as below. Observe the `http.url` property with the value of `/car/driveSeg`. Here the `travel_agency_service` is trying to call the `car_rental_service` and it's returning `http.status.code` of 502. Therefore, errornous service is `car_rental_service`.
+If we expand this errornous trace, and expand its spans too, we can identify the unavailable service as below. Observe the `http.url` property with the value of `/car/driveSeg`. Here the `travel_agency_service` is trying to call the `car_rental_service` and it's returning `http.status.code` of 502. Therefore, errornous service is `car_rental_service`.
 
 ![Unavaialbel-expanded](images/unavaialble-service-expanded-trace.png "Service unavaiable-trace expanded")
 
@@ -413,7 +411,7 @@ You can deploy the services using any of the methods listed below.
 
 - Once the .balx files are created inside the target folder, you can run them using the following command. 
 ```bash
-   $ ballerina run target/<Exec_Archive_File_Name> -e b7a.observability.metrics.prometheus.port=97xx
+   $ ballerina run -e b7a.observability.metrics.prometheus.port=97xx target/<Exec_Archive_File_Name>
 ```
 
 - The successful execution of a service will show us something similar to the following output. 
@@ -424,11 +422,11 @@ You can deploy the services using any of the methods listed below.
 
 ### Deploying on Docker
 
-You can run the service that we developed above as a docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. 
+You can run the service that we developed above as a Docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running Ballerina programs on containers, you just need to put the corresponding Docker annotations on your service code. 
 
-Let's see how we can deploy the travel_agency_service we developed above on docker. When invoking this service make sure that the other three services (airline_reservation, hotel_reservation, and car_rental) are also up and running. 
+Let's see how we can deploy the travel_agency_service we developed above on Docker. When invoking this service make sure that the other three services (airline_reservation, hotel_reservation, and car_rental) are also up and running. 
 
-- In our travel_agency_service, we need to import  `ballerinax/docker` and use the annotation `@docker:Config` as shown below to enable docker image generation during the build time. 
+- In our travel_agency_service, we need to import  `ballerinax/docker` and use the annotation `@docker:Config` as shown below to enable Docker image generation during the build time. 
 
 ##### travel_agency_service_parallel.bal
 ```ballerina
@@ -452,24 +450,24 @@ endpoint http:Listener travelAgencyEP {
 service<http:Service> travelAgencyService bind travelAgencyEP {
 ``` 
 
-- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding docker image using the docker annotations that you have configured above. Navigate to `microservices-observability/guide` and run the following command.  
+- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding Docker image using the Docker annotations that you have configured above. Navigate to `microservices-observability/guide` and run the following command.  
   
 ```
    $ ballerina build travel_agency
   
-   Run following command to start docker container: 
+   Run following command to start Docker container: 
    docker run -d -p 9090:9090 ballerina.guides.io/travel_agency_service:v1.0
 ```
 
-- Once you successfully build the docker image, you can run it with the `` docker run`` command that is shown in the previous step.  
+- Once you successfully build the Docker image, you can run it with the `` docker run`` command that is shown in the previous step.  
 
 ```bash
    $ docker run -d -p 9090:9090 ballerina.guides.io/travel_agency_service:v1.0
 ```
 
-   Here we run the docker image with flag`` -p <host_port>:<container_port>`` so that we use the host port 9090 and the container port 9090. Therefore you can access the service through the host port. 
+   Here we run the Docker image with flag`` -p <host_port>:<container_port>`` so that we use the host port 9090 and the container port 9090. Therefore you can access the service through the host port. 
 
-- Verify docker container is running with the use of `` $ docker ps``. The status of the docker container should be shown as 'Up'. 
+- Verify Docker container is running with the use of `` $ docker ps``. The status of the Docker container should be shown as 'Up'. 
 - You can access the service using the same curl commands that we've used above. 
  
 ```bash
@@ -482,7 +480,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
 
 ### Deploying on Kubernetes
 
-- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a ballerina programs on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the docker images. So you don't need to explicitly create docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
+- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a Ballerina programs on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the Docker images. So you don't need to explicitly create Docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
 
 - Let's now see how we can deploy our `travel_agency_service` on Kubernetes. When invoking this service make sure that the other three services (airline_reservation, hotel_reservation, and car_rental) are also up and running. 
 
@@ -521,11 +519,11 @@ endpoint http:Listener travelAgencyEP {
 service<http:Service> travelAgencyService bind travelAgencyEP {     
 ``` 
 
-- Here we have used ``  @kubernetes:Deployment `` to specify the docker image name which will be created as part of building this service. 
+- Here we have used ``  @kubernetes:Deployment `` to specify the Docker image name which will be created as part of building this service. 
 - We have also specified `` @kubernetes:Service `` so that it will create a Kubernetes service which will expose the Ballerina service that is running on a Pod.  
 - In addition we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and host name ``ballerina.guides.io``)
 
-- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding docker image and the Kubernetes artifacts using the Kubernetes annotations that you have configured above.
+- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. This will also create the corresponding Docker image and the Kubernetes artifacts using the Kubernetes annotations that you have configured above.
   
 ```
    $ ballerina build travel_agency
@@ -534,7 +532,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
    kubectl apply -f ./target/travel_agency/kubernetes
 ```
 
-- You can verify that the docker image that we specified in `` @kubernetes:Deployment `` is created, by using `` docker images ``. 
+- You can verify that the Docker image that we specified in `` @kubernetes:Deployment `` is created, by using `` docker images ``. 
 - Also the Kubernetes artifacts related our service, will be generated under `` ./target/travel_agency/kubernetes``. 
 - Now you can create the Kubernetes deployment using:
 
