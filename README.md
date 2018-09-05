@@ -472,8 +472,8 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
  
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"12-03-2018", "DepartureDate":"13-04-2018", "From":"Colombo",
-   "To":"Changi", "VehicleType":"Car", "Location":"Changi"}' \
+   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json"
 ```
 
@@ -558,8 +558,8 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
 Node Port:
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"12-03-2018", "DepartureDate":"13-04-2018", "From":"Colombo", 
-   "To":"Changi", "VehicleType":"Car", "Location":"Changi"}' \
+   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:<Node_Port>/travel/arrangeTour" -H "Content-Type:application/json"  
 ```
 
@@ -573,8 +573,8 @@ Add `/etc/hosts` entry to match hostname.
 Access the service 
 ```bash 
    curl -v -X POST -d \
-   '{"ArrivalDate":"12-03-2018", "DepartureDate":"13-04-2018", "From":"Colombo",
-   "To":"Changi", "VehicleType":"Car", "Location":"Changi"}' \
+   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   "VehicleType":"Car", "Location":"Changi"}' \
    "http://ballerina.guides.io/travel/arrangeTour" -H "Content-Type:application/json"  
 ```
 
