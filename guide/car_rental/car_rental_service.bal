@@ -14,12 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-//import ballerinax/docker;
 import ballerina/http;
-//import ballerinax/kubernetes;
 import ballerina/log;
 import ballerina/mysql;
 import ballerina/sql;
+//import ballerinax/docker;
+//import ballerinax/kubernetes;
 
 //@docker:Config {
 //    registry:"ballerina.guides.io",
