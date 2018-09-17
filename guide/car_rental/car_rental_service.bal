@@ -87,7 +87,7 @@ service<http:Service> carRentalService bind carEP {
         string company = "DriveSG";
 
         // If payload parsing fails, send a "Bad Request" message as the response
-        if (arrivalDate == null || departureDate == null || vehicleType == null) {
+        if (arrivalDate == "" || departureDate == "" || vehicleType == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
@@ -129,15 +129,15 @@ function carDBService (string company, string departureDate, string arrivalDate,
     log:printDebug("Invoking carDBService with parameters - company : " + company + ", departureDate : " + departureDate 
     + ", arrivalDate : " + arrivalDate + ", vehicleType : " + vehicleType);
     // Set arguments for the query
-    sql:Parameter p1 = {sqlType:sql:TYPE_VARCHAR, value:company};
-    sql:Parameter p2 = {sqlType:sql:TYPE_DATE, value:departureDate};
-    sql:Parameter p3 = {sqlType:sql:TYPE_DATE, value:arrivalDate};
-    sql:Parameter p4 = {sqlType:sql:TYPE_VARCHAR, value:vehicleType};
+    sql:Parameter companyParam = {sqlType:sql:TYPE_VARCHAR, value:company};
+    sql:Parameter departureDateParam = {sqlType:sql:TYPE_DATE, value:departureDate};
+    sql:Parameter arrivalDateParam = {sqlType:sql:TYPE_DATE, value:arrivalDate};
+    sql:Parameter vehicleTypeParam = {sqlType:sql:TYPE_VARCHAR, value:vehicleType};
     // Query to be executed
     string selectQuery = "SELECT * FROM CARS WHERE company = ? AND departureDate = ? AND arrivalDate = ? AND vehicleType = ?";
     log:printDebug("carDBService query : " + selectQuery);
     // Perform the SELECT operation on carDB endpoint
-    var temp = carDB->select(selectQuery, Car, p1, p2, p3, p4);
+    var temp = carDB->select(selectQuery, Car, companyParam, departureDateParam, arrivalDateParam, vehicleTypeParam);
     table<Car> cars = check temp;
     Car car = {};
     foreach i in cars {

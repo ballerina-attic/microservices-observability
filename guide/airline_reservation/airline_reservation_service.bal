@@ -90,7 +90,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         string airline = "Qatar";
 
         // If payload parsing fails, send a "Bad Request" message as the response
-        if (arrivalDate == null || departureDate == null || rom == null || to == null) {
+        if (arrivalDate == "" || departureDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
             _ = caller->respond(response);
@@ -141,7 +141,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         string airline = "Asiana";
 
         // If payload parsing fails, send a "Bad Request" message as the response
-        if (arrivalDate == null || arrivalDate == null || rom == null || to == null) {
+        if (arrivalDate == "" || arrivalDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
@@ -192,7 +192,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         string airline = "Emirates";
 
         // If payload parsing fails, send a "Bad Request" message as the response
-        if (arrivalDate == null || departureDate == null || rom == null || to == null) {
+        if (arrivalDate == "" || departureDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
@@ -241,17 +241,17 @@ function airlineDBService (string airline, string departureDate, string arrivalD
     log:printDebug("Invoking airlineDBService with parameters - airline : " + airline + ", departureDate : " + departureDate 
     + ", arrivalDate : " + arrivalDate + ", to : " + to + ", from : " + rom);
     // Set arguments for the query
-    sql:Parameter p1 = {sqlType:sql:TYPE_VARCHAR, value:airline};
-    sql:Parameter p2 = {sqlType:sql:TYPE_DATE, value:departureDate};
-    sql:Parameter p3 = {sqlType:sql:TYPE_DATE, value:arrivalDate};
-    sql:Parameter p4 = {sqlType:sql:TYPE_VARCHAR, value:to};
-    sql:Parameter p5 = {sqlType:sql:TYPE_VARCHAR, value:rom};
+    sql:Parameter airlineParam = {sqlType:sql:TYPE_VARCHAR, value:airline};
+    sql:Parameter departureDateParam = {sqlType:sql:TYPE_DATE, value:departureDate};
+    sql:Parameter arrivalDateParam = {sqlType:sql:TYPE_DATE, value:arrivalDate};
+    sql:Parameter toParam = {sqlType:sql:TYPE_VARCHAR, value:to};
+    sql:Parameter fromParam = {sqlType:sql:TYPE_VARCHAR, value:rom};
     // Query to be executed
     string selectQuery = "SELECT * FROM FLIGHTS WHERE airline = ? AND departureDate = ? AND arrivalDate = ? AND dest = ? AND rom = ?";
     log:printDebug("airlineDBService query : " + selectQuery);
     // Uncomment this line and restart the service  to delay the service by 1 second
     // runtime:sleep(1000);
-    var temp = airLineDB->select(selectQuery, Flight, p1, p2, p3, p4, p5);
+    var temp = airLineDB->select(selectQuery, Flight, airlineParam, departureDateParam, arrivalDateParam, toParam, fromParam);
     table<Flight> flights = check temp;
     Flight flight = {};
     foreach i in flights {
