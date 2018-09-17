@@ -22,44 +22,44 @@ import ballerina/sql;
 //import ballerinax/kubernetes;
 
 //@docker:Config {
-//    registry:"ballerina.guides.io",
-//    name:"car_rental_service",
-//    tag:"v1.0"
+//    registry: "ballerina.guides.io",
+//    name: "car_rental_service",
+//    tag: "v1.0"
 //}
 //
 //@docker:Expose{}
 
 //@kubernetes:Ingress {
-//  hostname:"ballerina.guides.io",
-//  name:"ballerina-guides-car-rental-service",
-//  path:"/"
+//  hostname: "ballerina.guides.io",
+//  name: "ballerina-guides-car-rental-service",
+//  path: "/"
 //}
 //
 //@kubernetes:Service {
-//  serviceType:"NodePort",
-//  name:"ballerina-guides-car-rental-service"
+//  serviceType: "NodePort",
+//  name: "ballerina-guides-car-rental-service"
 //}
 //
 //@kubernetes:Deployment {
-//  image:"ballerina.guides.io/car_rental_service:v1.0",
-//  name:"ballerina-guides-car-rental-service"
+//  image: "ballerina.guides.io/car_rental_service:v1.0",
+//  name: "ballerina-guides-car-rental-service"
 //}
 
 // Service endpoint
 endpoint http:Listener carEP {
-    port:9093
+    port: 9093
 };
 
 // Car rental service
-@http:ServiceConfig {basePath:"/car"}
+@http:ServiceConfig {basePath: "/car"}
 service<http:Service> carRentalService bind carEP {
 
     // Resource 'driveSg', which checks about hotel 'DriveSg'
     @http:ResourceConfig {
-        methods:["POST"],
-        path:"/driveSg",
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        path: "/driveSg",
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     driveSg(endpoint caller, http:Request request) {
         http:Response response;
@@ -74,7 +74,7 @@ service<http:Service> carRentalService bind carEP {
             // NOT a valid JSON payload
             any => {
                 response.statusCode = 400;
-                response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
+                response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
@@ -89,7 +89,7 @@ service<http:Service> carRentalService bind carEP {
         // If payload parsing fails, send a "Bad Request" message as the response
         if (arrivalDate == null || departureDate == null || vehicleType == null) {
             response.statusCode = 400;
-            response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
+            response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check request.getJsonPayload()!toString());
             done;
@@ -116,11 +116,11 @@ type Car record {
 
 // Database endpoint
 endpoint mysql:Client carDB{
-    host:"localhost",
-    port:3306,
-    name:"testdb2",
-    username:"root",
-    password:"root",
+    host: "localhost",
+    port: 3306,
+    name: "testdb2",
+    username: "root",
+    password: "root",
     dbOptions: { useSSL: false }
 };
 
@@ -134,10 +134,10 @@ function carDBService (string company, string departureDate, string arrivalDate,
     sql:Parameter p3 = {sqlType:sql:TYPE_DATE, value:arrivalDate};
     sql:Parameter p4 = {sqlType:sql:TYPE_VARCHAR, value:vehicleType};
     // Query to be executed
-    string q = "SELECT * FROM CARS WHERE company = ? AND departureDate = ? AND arrivalDate = ? AND vehicleType = ?";
-    log:printDebug("carDBService query : " + q);
+    string selectQuery = "SELECT * FROM CARS WHERE company = ? AND departureDate = ? AND arrivalDate = ? AND vehicleType = ?";
+    log:printDebug("carDBService query : " + selectQuery);
     // Perform the SELECT operation on carDB endpoint
-    var temp = carDB->select(q, Car, p1, p2, p3, p4);
+    var temp = carDB->select(selectQuery, Car, p1, p2, p3, p4);
     table<Car> cars = check temp;
     Car car = {};
     foreach i in cars {

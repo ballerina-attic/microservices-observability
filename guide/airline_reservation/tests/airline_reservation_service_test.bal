@@ -19,15 +19,15 @@ import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
-    "ArrivalDate":"2007-11-06",
-    "DepartureDate":"2007-11-06",
-    "From":"CMB",
-    "To":"DXB"
+    "ArrivalDate": "2007-11-06",
+    "DepartureDate": "2007-11-06",
+    "From": "CMB",
+    "To": "DXB"
 };
 
 // Client endpoint
 endpoint http:Client clientEP {
-    url:"http://localhost:9091/airline"
+    url: "http://localhost:9091/airline"
 };
 
 // Function to test resource 'flightQatar'

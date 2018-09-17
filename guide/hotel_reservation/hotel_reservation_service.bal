@@ -20,44 +20,44 @@ import ballerina/log;
 //import ballerinax/kubernetes;
 
 //@docker:Config {
-//    registry:"ballerina.guides.io",
-//    name:"hotel_reservation_service",
-//    tag:"v1.0"
+//    registry: "ballerina.guides.io",
+//    name: "hotel_reservation_service",
+//    tag: "v1.0"
 //}
 //
 //@docker:Expose{}
 
 //@kubernetes:Ingress {
-//  hostname:"ballerina.guides.io",
-//  name:"ballerina-guides-hotel-reservation-service",
-//  path:"/"
+//  hostname: "ballerina.guides.io",
+//  name: "ballerina-guides-hotel-reservation-service",
+//  path: "/"
 //}
 //
 //@kubernetes:Service {
-//  serviceType:"NodePort",
-//  name:"ballerina-guides-hotel-reservation-service"
+//  serviceType: "NodePort",
+//  name: "ballerina-guides-hotel-reservation-service"
 //}
 //
 //@kubernetes:Deployment {
-//  image:"ballerina.guides.io/hotel_reservation_service:v1.0",
-//  name:"ballerina-guides-hotel-reservation-service"
+//  image: "ballerina.guides.io/hotel_reservation_service:v1.0",
+//  name: "ballerina-guides-hotel-reservation-service"
 //}
 
 // Service endpoint
 endpoint http:Listener hotelEP {
-    port:9092
+    port: 9092
 };
 
 // Hotel reservation service
-@http:ServiceConfig {basePath:"/hotel"}
+@http:ServiceConfig {basePath: "/hotel"}
 service<http:Service> hotelReservationService bind hotelEP {
 
     // Resource 'elizabeth', which checks about hotel 'Elizabeth'
     @http:ResourceConfig {
-        methods:["POST"],
-        path:"/elizabeth",
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        path: "/elizabeth",
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     elizabeth (endpoint caller, http:Request request) {
         http:Response response;
@@ -96,10 +96,10 @@ service<http:Service> hotelReservationService bind hotelEP {
         // Hotel service doesn't do database calls to retrieve information, response in hard-coded
         // Details of the hotel
         json hotelDetails = {
-            "HotelName":"Elizabeth",
-            "FromDate":arrivalDate,
-            "ToDate":departureDate,
-            "DistanceToLocation":2
+            "HotelName": "Elizabeth",
+            "FromDate": arrivalDate,
+            "ToDate": departureDate,
+            "DistanceToLocation": 2
         };
         // Response payload
         log:printDebug("Client response : " + hotelDetails.toString());

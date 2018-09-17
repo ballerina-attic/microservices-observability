@@ -19,14 +19,14 @@ import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
-    ArrivalDate : "2007-11-06",
-    DepartureDate : "2007-11-06",
-    Location : "Changi"
+    ArrivalDate: "2007-11-06",
+    DepartureDate: "2007-11-06",
+    Location: "Changi"
 };
 
 // Client endpoint
 endpoint http:Client clientEP {
-    url:"http://localhost:9092/hotel"
+    url: "http://localhost:9092/hotel"
 };
 
 // Function to test resource 'elizabeth'

@@ -22,58 +22,58 @@ import ballerina/observe;
 //import ballerinax/kubernetes;
 
 //@docker:Config {
-//    registry:"ballerina.guides.io",
-//    name:"travel_agency_service",
-//    tag:"v1.0"
+//    registry: "ballerina.guides.io",
+//    name: "travel_agency_service",
+//    tag: "v1.0"
 //}
 //
 //@docker:Expose{}
 
 //@kubernetes:Ingress {
-//  hostname:"ballerina.guides.io",
-//  name:"ballerina-guides-travel-agency-service",
-//  path:"/"
+//  hostname: "ballerina.guides.io",
+//  name: "ballerina-guides-travel-agency-service",
+//  path: "/"
 //}
 //
 //@kubernetes:Service {
-//  serviceType:"NodePort",
-//  name:"ballerina-guides-travel-agency-service"
+//  serviceType: "NodePort",
+//  name: "ballerina-guides-travel-agency-service"
 //}
 //
 //@kubernetes:Deployment {
-//  image:"ballerina.guides.io/travel_agency_service:v1.0",
-//  name:"ballerina-guides-travel-agency-service"
+//  image: "ballerina.guides.io/travel_agency_service:v1.0",
+//  name: "ballerina-guides-travel-agency-service"
 //}
 
 // Service endpoint
 endpoint http:Listener travelAgencyEP {
-    port:9090
+    port: 9090
 };
 
 // Client endpoint to communicate with Airline reservation service
 endpoint http:Client airlineEP {
-    url:"http://localhost:9091/airline"
+    url: "http://localhost:9091/airline"
 };
 
 // Client endpoint to communicate with Hotel reservation service
 endpoint http:Client hotelEP {
-    url:"http://localhost:9092/hotel"
+    url: "http://localhost:9092/hotel"
 };
 
 // Client endpoint to communicate with Car rental service
 endpoint http:Client carRentalEP {
-    url:"http://localhost:9093/car"
+    url: "http://localhost:9093/car"
 };
 
 // Travel agency service to arrange a complete tour for a user
-@http:ServiceConfig {basePath:"/travel"}
+@http:ServiceConfig {basePath: "/travel"}
 service<http:Service> travelAgencyService bind travelAgencyEP {
 
     // Resource to arrange a tour
     @http:ResourceConfig {
-        methods:["POST"],
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     arrangeTour (endpoint client, http:Request inRequest) {
         http:Response outResponse;

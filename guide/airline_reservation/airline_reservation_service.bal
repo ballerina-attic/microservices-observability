@@ -24,44 +24,44 @@ import ballerina/sql;
 //import ballerinax/kubernetes;
 
 //@docker:Config {
-//    registry:"ballerina.guides.io",
-//    name:"airline_reservation_service",
-//    tag:"v1.0"
+//    registry: "ballerina.guides.io",
+//    name: "airline_reservation_service",
+//    tag: "v1.0"
 //}
 //
 //@docker:Expose{}
 
 //@kubernetes:Ingress {
-//  hostname:"ballerina.guides.io",
-//  name:"ballerina-guides-airline-reservation-service",
-//  path:"/"
+//  hostname: "ballerina.guides.io",
+//  name: "ballerina-guides-airline-reservation-service",
+//  path: "/"
 //}
 //
 //@kubernetes:Service {
-//  serviceType:"NodePort",
-//  name:"ballerina-guides-airline-reservation-service"
+//  serviceType: "NodePort",
+//  name: "ballerina-guides-airline-reservation-service"
 //}
 //
 //@kubernetes:Deployment {
-//  image:"ballerina.guides.io/airline_reservation_service:v1.0",
-//  name:"ballerina-guides-airline-reservation-service"
+//  image: "ballerina.guides.io/airline_reservation_service:v1.0",
+//  name: "ballerina-guides-airline-reservation-service"
 //}
 
 // Service endpoint
 endpoint http:Listener airlineEP {
-    port:9091
+    port: 9091
 };
 
 // Airline reservation service
-@http:ServiceConfig {basePath:"/airline"}
+@http:ServiceConfig {basePath: "/airline"}
 service<http:Service> airlineReservationService bind airlineEP {
 
     // Resource 'flightQatar', which checks about airline 'Qatar Airways'
     @http:ResourceConfig {
-        methods:["POST"],
-        path:"/qatarAirways",
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        path: "/qatarAirways",
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     flightQatar (endpoint caller, http:Request request) {
         http:Response response;
@@ -76,7 +76,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // NOT a valid JSON payload
             any => {
                 response.statusCode = 400;
-                response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
+                response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
@@ -109,10 +109,10 @@ service<http:Service> airlineReservationService bind airlineEP {
 
     // Resource 'flightAsiana', which checks about airline 'Asiana'
     @http:ResourceConfig {
-        methods:["POST"],
-        path:"/asiana",
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        path: "/asiana",
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     flightAsiana (endpoint caller, http:Request request) {
         http:Response response;
@@ -127,7 +127,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // NOT a valid JSON payload
             any => {
                 response.statusCode = 400;
-                response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
+                response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
@@ -143,7 +143,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         // If payload parsing fails, send a "Bad Request" message as the response
         if (arrivalDate == null || arrivalDate == null || rom == null || to == null) {
             response.statusCode = 400;
-            response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
+            response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " );
             done;
@@ -160,10 +160,10 @@ service<http:Service> airlineReservationService bind airlineEP {
 
     // Resource 'flightEmirates', which checks about airline 'Emirates'
     @http:ResourceConfig {
-        methods:["POST"],
-        path:"/emirates",
-        consumes:["application/json"],
-        produces:["application/json"]
+        methods: ["POST"],
+        path: "/emirates",
+        consumes: ["application/json"],
+        produces: ["application/json"]
     }
     flightEmirates (endpoint caller, http:Request request) {
         http:Response response;
@@ -178,7 +178,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // NOT a valid JSON payload
             any => {
                 response.statusCode = 400;
-                response.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
+                response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 _ = caller->respond(response);
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
@@ -194,7 +194,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         // If payload parsing fails, send a "Bad Request" message as the response
         if (arrivalDate == null || departureDate == null || rom == null || to == null) {
             response.statusCode = 400;
-            response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
+            response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
             _ = caller->respond(response);
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " );
             done;
@@ -230,11 +230,11 @@ function airlineDBService (string airline, string departureDate, string arrivalD
     // database credentials are given
     // Wrong credentials will be given to observe the results of no database connectivity
     endpoint mysql:Client airLineDB{
-        host:"localhost",
-        port:3306,
-        name:"testdb2",
-        username:"root",
-        password:"root",
+        host: "localhost",
+        port: 3306,
+        name: "testdb2",
+        username: "root",
+        password: "root",
         dbOptions: { useSSL: false }
     };
 
@@ -247,11 +247,11 @@ function airlineDBService (string airline, string departureDate, string arrivalD
     sql:Parameter p4 = {sqlType:sql:TYPE_VARCHAR, value:to};
     sql:Parameter p5 = {sqlType:sql:TYPE_VARCHAR, value:rom};
     // Query to be executed
-    string q = "SELECT * FROM FLIGHTS WHERE airline = ? AND departureDate = ? AND arrivalDate = ? AND dest = ? AND rom = ?";
-    log:printDebug("airlineDBService query : " + q);
+    string selectQuery = "SELECT * FROM FLIGHTS WHERE airline = ? AND departureDate = ? AND arrivalDate = ? AND dest = ? AND rom = ?";
+    log:printDebug("airlineDBService query : " + selectQuery);
     // Uncomment this line and restart the service  to delay the service by 1 second
     // runtime:sleep(1000);
-    var temp = airLineDB->select(q, Flight, p1, p2, p3, p4, p5);
+    var temp = airLineDB->select(selectQuery, Flight, p1, p2, p3, p4, p5);
     table<Flight> flights = check temp;
     Flight flight = {};
     foreach i in flights {

@@ -19,14 +19,14 @@ import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
-    "ArrivalDate":"2007-11-06",
-    "DepartureDate":"2007-11-06",
-    "VehicleType":"Car"
+    "ArrivalDate": "2007-11-06",
+    "DepartureDate": "2007-11-06",
+    "VehicleType": "Car"
 };
 
 // Client endpoint
 endpoint http:Client clientEP {
-    url:"http://localhost:9093/car"
+    url: "http://localhost:9093/car"
 };
 
 // Function to test resource 'driveSg'
