@@ -27,7 +27,7 @@ import ballerina/sql;
 //    tag: "v1.0"
 //}
 //
-//@docker:Expose{}
+//@docker:Expose {}
 
 //@kubernetes:Ingress {
 //  hostname: "ballerina.guides.io",
@@ -72,7 +72,7 @@ service<http:Service> carRentalService bind carEP {
             // Valid JSON payload
             json payload => reqPayload = payload;
             // NOT a valid JSON payload
-            any => {
+            error => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -105,7 +105,7 @@ service<http:Service> carRentalService bind carEP {
     }
 }
 
-documentation{
+documentation {
     `Car` record type holds information of each database result.
     F{{company}} Car rental company name
     F{{arrivalDate}} Planned date of pickup
@@ -123,7 +123,7 @@ type Car record {
 };
 
 // Database endpoint
-endpoint mysql:Client carDB{
+endpoint mysql:Client carDB {
     host: "localhost",
     port: 3306,
     name: "testdb2",

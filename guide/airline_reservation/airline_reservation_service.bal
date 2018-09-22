@@ -74,7 +74,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // Valid JSON payload
             json payload => reqPayload = payload;
             // NOT a valid JSON payload
-            any => {
+            error => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -101,7 +101,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         // Query the database to retrieve flight details
         json flightDetails = untaint airlineDBService(airline, departureDate, arrivalDate, to, rom);
         // Response payload
-        log:printDebug("Client response from Qatar : " + flightDetails.toString());
+        log:printDebug("Response from Qatar : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
         caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -125,7 +125,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // Valid JSON payload
             json payload => reqPayload = payload;
             // NOT a valid JSON payload
-            any => {
+            error => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -152,7 +152,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         // Query the database to retrieve flight details
         json flightDetails = untaint airlineDBService(airline, departureDate, arrivalDate, to, rom);
         // Response payload
-        log:printDebug("Client response from Asiana : " + flightDetails.toString());
+        log:printDebug("Response from Asiana : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
         caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -176,7 +176,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             // Valid JSON payload
             json payload => reqPayload = payload;
             // NOT a valid JSON payload
-            any => {
+            error => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
                 caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -207,7 +207,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         // Uncomment to observe the function execution time
         // observe:finishSpan(spanId) but {error e => log:printError("Error finishing span", err = e)};
         // Response payload
-        log:printDebug("Client response from Emirates : " + flightDetails.toString());
+        log:printDebug("Response from Emirates : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
         caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
@@ -243,11 +243,11 @@ documentation {
     P{{rom}} Departing airport
     R{{}} Returns a `Flight` record in json format
 }
-function airlineDBService (string airline, string departureDate, string arrivalDate, string to, string rom) returns (json){
+function airlineDBService (string airline, string departureDate, string arrivalDate, string to, string rom) returns (json) {
     // Database endpoint configuration moved inside the function to prevent the error on service startup when wrong 
     // database credentials are given.
     // Wrong credentials will be given to observe the results of no database connectivity.
-    endpoint mysql:Client airLineDB{
+    endpoint mysql:Client airLineDB {
         host: "localhost",
         port: 3306,
         name: "testdb2",

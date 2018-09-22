@@ -27,7 +27,7 @@ import ballerina/observe;
 //    tag: "v1.0"
 //}
 //
-//@docker:Expose{}
+//@docker:Expose {}
 
 //@kubernetes:Ingress {
 //  hostname: "ballerina.guides.io",
@@ -86,7 +86,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
             // Valid JSON payload
             json payload => inReqPayload = payload;
             // NOT a valid JSON payload
-            any => {
+            error => {
                 outResponse.statusCode = 400;
                 outResponse.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
                 client->respond(outResponse) but {error e => log:printError("Error sending response", err = e)};
