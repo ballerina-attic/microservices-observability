@@ -360,11 +360,11 @@ call failed
 ```
 Jaeger traces
 
-![Unavaialbel](images/service-unavailable-trace.png "Service unavaiable")
+![Unavailable](images/service-unavailable-trace.png "Service unavailable")
 
 If we expand this errornous trace, and expand its spans too, we can identify the unavailable service as below. Observe the `http.url` property with the value of `/car/driveSeg`. Here the `travel_agency_service` is trying to call the `car_rental_service` and it's returning `http.status.code` of 502. Therefore, errornous service is `car_rental_service`.
 
-![Unavaialbel-expanded](images/unavaialble-service-expanded-trace.png "Service unavaiable-trace expanded")
+![Unavailable-expanded](images/unavailable-service-expanded-trace.png "Service unavailable-trace expanded")
 
 ### Determining database call duration and bottleneck queries
 Jaeger traces includes spans for database operations. Below is the SELECT query which is being executed inside the `airline_reservation_service`.
