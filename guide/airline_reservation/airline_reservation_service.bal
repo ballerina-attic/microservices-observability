@@ -77,7 +77,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
-                _ = caller->respond(response);
+                caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -93,7 +93,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         if (arrivalDate == "" || departureDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
-            _ = caller->respond(response);
+            caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check request.getJsonPayload()!toString());
             done;
         }
@@ -104,7 +104,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         log:printDebug("Client response from Qatar : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
-        _ = caller->respond(response);
+        caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
     }
 
     // Resource 'flightAsiana', which checks about airline 'Asiana'
@@ -128,7 +128,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
-                _ = caller->respond(response);
+                caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -144,7 +144,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         if (arrivalDate == "" || arrivalDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
-            _ = caller->respond(response);
+            caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " );
             done;
         }
@@ -155,7 +155,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         log:printDebug("Client response from Asiana : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
-        _ = caller->respond(response);
+        caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
     }
 
     // Resource 'flightEmirates', which checks about airline 'Emirates'
@@ -179,7 +179,7 @@ service<http:Service> airlineReservationService bind airlineEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
-                _ = caller->respond(response);
+                caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -195,7 +195,7 @@ service<http:Service> airlineReservationService bind airlineEP {
         if (arrivalDate == "" || departureDate == "" || rom == "" || to == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
-            _ = caller->respond(response);
+            caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " );
             done;
         }
@@ -205,12 +205,12 @@ service<http:Service> airlineReservationService bind airlineEP {
         // Query the database to retrieve flight details
         json flightDetails = untaint airlineDBService(airline, departureDate, arrivalDate, to, rom);
         // Uncomment to observe the function execution time
-        // _ = observe:finishSpan(spanId);
+        // observe:finishSpan(spanId) but {error e => log:printError("Error finishing span", err = e)};
         // Response payload
         log:printDebug("Client response from Emirates : " + flightDetails.toString());
         response.setJsonPayload(flightDetails);
         // Send the response to the caller
-        _ = caller->respond(response);
+        caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
     }
 }
 
@@ -231,6 +231,7 @@ type Flight record {
     string to;
     string rom;
     int price;
+    !...
 };
 
 documentation {

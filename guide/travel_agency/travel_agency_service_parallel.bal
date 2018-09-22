@@ -89,7 +89,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
             any => {
                 outResponse.statusCode = 400;
                 outResponse.setJsonPayload({"Message":"Invalid payload - Not a valid JSON payload"});
-                _ = client->respond(outResponse);
+                client->respond(outResponse) but {error e => log:printError("Error sending response", err = e)};
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -108,19 +108,19 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
             vehicleType == null || location == null) {
             outResponse.statusCode = 400;
             outResponse.setJsonPayload({"Message":"Bad Request - Invalid Payload"});
-            _ = client->respond(outResponse);
+            client->respond(outResponse) but {error e => log:printError("Error sending response", err = e)};
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check inRequest.getJsonPayload()!toString());
             done;
         }
 
         // Out request payload for Airline reservation service
-        json flightPayload = {"ArrivalDate":arrivalDate, "DepartureDate":departureDate, "From":fromPlace, "To":toPlace};
+        json flightPayload = {"ArrivalDate": arrivalDate, "DepartureDate": departureDate, "From": fromPlace, "To": toPlace};
         log:printDebug("Flight payload : " + flightPayload.toString());
         // Out request payload for Hotel reservation service
-        json hotelPayload = {"ArrivalDate":arrivalDate, "DepartureDate":departureDate, "Location":location};
+        json hotelPayload = {"ArrivalDate": arrivalDate, "DepartureDate": departureDate, "Location": location};
         log:printDebug("Hotel payload : " + hotelPayload.toString());
         // Out request payload for Car rental service
-        json vehiclePayload = {"ArrivalDate":arrivalDate, "DepartureDate":departureDate, "VehicleType":vehicleType};
+        json vehiclePayload = {"ArrivalDate": arrivalDate, "DepartureDate": departureDate, "VehicleType": vehicleType};
         log:printDebug("Vehicle payload : " + vehiclePayload.toString());
 
         json jsonFlightResponse;
@@ -167,13 +167,13 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
                 outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /emirates");
                 // Send a POST request to 'Emirates' and get the results
-                http:Response respWorkerEmirates = check airlineEP -> post("/emirates", outReq);
+                http:Response respWorkerEmirates = check airlineEP->post("/emirates", outReq);
                 // Reply to the join block from this worker - Send the response from 'Emirates'
-                respWorkerEmirates -> fork;
+                respWorkerEmirates->fork;
             }
         } join (all) (map airlineResponses) {
             // Uncomment to finish the span when all three airlines have responded
-            // _ = observe:finishSpan(spanId);
+            // observe:finishSpan(spanId) but {error e => log:printError("Error finishing span", err = e)};
             // Wait until the responses received from all the workers running in parallel
             int qatarPrice;
             int asianaPrice;
@@ -260,6 +260,6 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
         log:printDebug("Client response : " + clientResponse.toString());
         outResponse.setJsonPayload(untaint clientResponse);
         // Send the response to the client
-        _ = client->respond(outResponse);
+        client->respond(outResponse) but {error e => log:printError("Error sending response", err = e)};
     }
 }

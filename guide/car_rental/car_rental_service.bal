@@ -75,7 +75,7 @@ service<http:Service> carRentalService bind carEP {
             any => {
                 response.statusCode = 400;
                 response.setJsonPayload({"Message" : "Invalid payload - Not a valid JSON payload"});
-                _ = caller->respond(response);
+                caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
                 log:printWarn("Invalid payload at : " + resourcePath);
                 done;
             }
@@ -90,7 +90,7 @@ service<http:Service> carRentalService bind carEP {
         if (arrivalDate == "" || departureDate == "" || vehicleType == "") {
             response.statusCode = 400;
             response.setJsonPayload({"Message" : "Bad Request - Invalid Payload"});
-            _ = caller->respond(response);
+            caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
             log:printWarn("Request with unsufficient info at : " + resourcePath + " : " + check request.getJsonPayload()!toString());
             done;
         }
@@ -101,7 +101,7 @@ service<http:Service> carRentalService bind carEP {
         log:printDebug("Client response : " + carDetails.toString());
         response.setJsonPayload(carDetails);
         // Send the response to the caller
-        _ = caller->respond(response);
+        caller->respond(response) but {error e => log:printError("Error sending response", err = e)};
     }
 }
 
@@ -119,6 +119,7 @@ type Car record {
     string departureDate;
     string vehicleType;
     int price;
+    !...
 };
 
 // Database endpoint
