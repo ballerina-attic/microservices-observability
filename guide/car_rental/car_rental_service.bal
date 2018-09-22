@@ -105,7 +105,14 @@ service<http:Service> carRentalService bind carEP {
     }
 }
 
-// Define car record type
+documentation{
+    `Car` record type holds information of each database result.
+    F{{company}} Car rental company name
+    F{{arrivalDate}} Planned date of pickup
+    F{{departureDate}} Planned date of return
+    F{{vehicleType}} Type of vehicle
+    F{{price}} Price of selected plan
+}
 type Car record {
     string company;
     string arrivalDate;
@@ -124,8 +131,15 @@ endpoint mysql:Client carDB{
     dbOptions: { useSSL: false }
 };
 
-// Function to do databse calls
-function carDBService (string company, string departureDate, string arrivalDate, string vehicleType) returns json {
+documentation {
+    `carDBService` function constructs and executes queries on car rental database.
+    P{{company}} Car rental company name
+    P{{departureDate}} Planned date of pickup
+    P{{arrivalDate}} Planned date of return
+    P{{vehicleType}} Type of vehicle
+    R{{}} Returns a `Car` record in json format
+}
+function carDBService (string company, string departureDate, string arrivalDate, string vehicleType) returns (json) {
     log:printDebug("Invoking carDBService with parameters - company : " + company + ", departureDate : " + departureDate 
     + ", arrivalDate : " + arrivalDate + ", vehicleType : " + vehicleType);
     // Set arguments for the query

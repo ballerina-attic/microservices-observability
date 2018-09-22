@@ -214,7 +214,15 @@ service<http:Service> airlineReservationService bind airlineEP {
     }
 }
 
-// Define Flight record type
+documentation{
+    `Flight` record type holds information of each database result.
+    F{{flightNo}} Flight number of selected flight
+    F{{airline}} Name of the selected airline
+    F{{arrivalDate}} Return date of selected flight
+    F{{departureDate}} Departing date of selected flight
+    F{{to}} Destination airport of selected flight
+    F{{rom}} Departing airport of selected flight
+}
 type Flight record {
     int flightNo;
     string airline;
@@ -225,10 +233,19 @@ type Flight record {
     int price;
 };
 
+documentation {
+    `airlineDBService` function constructs and executes queries on air line database.
+    P{{airline}} Air line name
+    P{{departureDate}} Planned departure date
+    P{{arrivalDate}} Planned return date
+    P{{to}} Destination airport
+    P{{rom}} Departing airport
+    R{{}} Returns a `Flight` record in json format
+}
 function airlineDBService (string airline, string departureDate, string arrivalDate, string to, string rom) returns (json){
     // Database endpoint configuration moved inside the function to prevent the error on service startup when wrong 
-    // database credentials are given
-    // Wrong credentials will be given to observe the results of no database connectivity
+    // database credentials are given.
+    // Wrong credentials will be given to observe the results of no database connectivity.
     endpoint mysql:Client airLineDB{
         host: "localhost",
         port: 3306,
