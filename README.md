@@ -20,7 +20,7 @@ Following are the sections available in this guide.
 
 ## Introduction
 
-This guide explains the applicability of Ballerina observability in below scenarios. 
+This guide explains the applicability of Ballerina observability in the following scenarios. 
 - Identifying the bottleneck
 - Identifying the unavailble services
 - Determining database call duration and bottleneck queries
@@ -28,13 +28,13 @@ This guide explains the applicability of Ballerina observability in below scenar
 
 Consider a real-world use case of a travel agency that arranges complete tours for users. A tour package includes airline ticket reservation, hotel room reservation and car rental. Therefore, the travel agency service requires communicating with other necessary back-ends. Those back-ends query their databases to retrieve information of availability of their services.
 
-Travel Agency service communicates with multiple services. Airline reservation service has multiple resources for three different airlines, whereas Hotel reservation and Car rental services only have a single resource. The travel agency service checks all airline resources in parallel to select the cheapest available. Each associated service then queries their database for the availability and information of their services. Only Hotel resevation service does not have a associated database. Rather the response is hard-coded to demonstrate the difference in traces.
+Travel Agency service communicates with multiple services. Airline reservation service has multiple resources for three different airlines, whereas hotel reservation and car rental services only have a single resource. The travel agency service checks all airline resources in parallel to select the cheapest available. Each associated service then queries their database for the availability and information of their services. Only hotel resevation service does not have a associated database. Rather the response is hard-coded to demonstrate the difference in traces.
 
 ![Ballerina Observability Sample](/images/ballerina-observability-sample.png)
 
 ## Prerequisites
  
-- [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
+- [Ballerina Distribution](https://ballerina.io/downloads/)
 - A Text Editor or an IDE
 - [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 - [Prometheus](https://ballerina.io/learn/how-to-observe-ballerina-code/#prometheus)
@@ -42,7 +42,7 @@ Travel Agency service communicates with multiple services. Airline reservation s
 - [Jaeger](https://ballerina.io/learn/how-to-observe-ballerina-code/#jaeger-server)
 
 ### Optional requirements
-- Ballerina IDE plugins ([IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina), [VSCode](https://marketplace.visualstudio.com/items?itemName=WSO2.Ballerina), [Atom](https://atom.io/packages/language-ballerina))
+- Ballerina IDE plugins ([IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina), [VSCode](https://marketplace.visualstudio.com/items?itemName=WSO2.Ballerina))
 - [Kubernetes](https://kubernetes.io/docs/setup/)
 
 ## Testing the services
@@ -54,7 +54,7 @@ Please refer to the [Prerequisites](#prerequisites) section for information on s
 - Grafana - [http://localhost:3000](http://localhost:3000)
 - Jaeger - [http://localhost:16686](http://localhost:16686)
 
-Create the database using the script provided in resources directory. This datbase is being used by the services to retrieve data.
+Create the database using the script provided in the resources directory. This will be the database used by the services.
 ```sql
 mysql -u <username> -p
 source resources/mysql.sql;
@@ -65,18 +65,18 @@ source resources/mysql.sql;
 - Navigate to `microservices-observability/guide` and run the following commands in separate terminals to start all four HTTP services. This will start the `Airline Reservation`, `Hotel Reservation`, `Car Rental` and `Travel Agency` services in ports 9091, 9092, 9093 and 9090 respectively.
 
 ```bash
-   $ ballerina run travel_agency/
+   $ ballerina run travel_agency
 ```
 ```bash 
-   $ ballerina run -e b7a.observability.metrics.prometheus.port=9797 airline_reservation/
+   $ ballerina run -e b7a.observability.metrics.prometheus.port=9797 airline_reservation
 ```
 ```bash
-   $ ballerina run -e b7a.observability.metrics.prometheus.port=9798 hotel_reservation/
+   $ ballerina run -e b7a.observability.metrics.prometheus.port=9798 hotel_reservation
 ```
 ```bash
-   $ ballerina run -e b7a.observability.metrics.prometheus.port=9799 car_rental/
+   $ ballerina run -e b7a.observability.metrics.prometheus.port=9799 car_rental
 ```
-Note that we are overridng the prometheus port by passing the parameter (`-e b7a.observability.metrics.prometheus.port=xxxx`) for all the services, except the travel_agency service. Travel agency service will publish the metrics data on the default port defined in the `ballerina.conf` file (9796). This will avoid any conflicts on port being already occupied.
+Note that we are overridng the Prometheus port by passing the parameter `-e b7a.observability.metrics.prometheus.port=xxxx` for all the services, except the Travel Agency service. Travel Agency service will publish the metrics data to the default port defined in the `ballerina.conf` file (9796). This will avoid any conflicts on port being already occupied.
 - Invoke the Travel Agency service by sending a POST request to arrange a tour.
 
 ```bash
@@ -121,7 +121,7 @@ When you execute the ```ballerina run``` command from the ```microservices-obser
 ### Tracing 
 You can monitor Ballerina services using in-built tracing capabilities of Ballerina. We'll use [Jaeger](https://github.com/jaegertracing/jaeger) as the distributed tracing system.
 Follow the below steps to use tracing with Ballerina.
-- Add below configurations to the `ballerina.conf` file
+- Add the following configurations to the `ballerina.conf` file
 ```
 [b7a.observability.tracing]
 # Flag to enable Tracing
@@ -144,12 +144,12 @@ reporter.max.buffer.spans=1000
    -p16686:16686 p14268:14268 jaegertracing/all-in-one:latest
 ```
 
-- Observe the tracers using Jaeger UI using following URL after doing some service invocations on Travel Agency service.
+- Invoke the Travel Agency service several times and observe the tracers in the Jaeger UI using the following URL
 
    [http://localhost:16686](http://localhost:16686)
 
 
-- You should see the Jaeger UI as follows
+- The Jaeger UI should look similar to the following:
 
    ![Jaeger UI](images/tracing-screenshot.png "Tracing Screenshot")
  
@@ -211,7 +211,7 @@ Ballerina has a log package for logging to the console. You can import 'allerina
 
 - Start the Ballerina Service with the following command from `microservices-observability/guide`
 ```
-   nohup ballerina run travel_agency/ &>> ballerina.log&
+   nohup ballerina run travel_agency &>> ballerina.log&
 ```
 
 NOTE: This will write the console log to the `ballerina.log` file in the `microservices-observability/guide` directory

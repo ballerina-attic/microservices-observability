@@ -32,7 +32,7 @@ endpoint http:Client clientEP {
 // Function to test resource 'driveSg'
 @test:Config
 function testResourceDriveSg () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
     // Set request payload
     req.setJsonPayload(requestPayload);

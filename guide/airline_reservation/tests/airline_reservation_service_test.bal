@@ -33,7 +33,7 @@ endpoint http:Client clientEP {
 // Function to test resource 'flightQatar'
 @test:Config
 function testResourceFlightQatar () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
     // Set request payload
     req.setJsonPayload(requestPayload);
@@ -52,7 +52,7 @@ function testResourceFlightQatar () {
 // Function to test resource 'flightAsiana'
 @test:Config
 function testResourceFlightAsiana () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
     // Set request payload
     req.setJsonPayload(requestPayload);
@@ -71,7 +71,7 @@ function testResourceFlightAsiana () {
 // Function to test resource 'flightEmirates'
 @test:Config
 function testResourceFlightEmirates () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
     // Set request payload
     req.setJsonPayload(requestPayload);

@@ -29,7 +29,7 @@ import ballerina/sql;
 //    tag: "v1.0"
 //}
 //
-//@docker:Expose{}
+//@docker:Expose {}
 
 //@kubernetes:Ingress {
 //  hostname: "ballerina.guides.io",
@@ -281,6 +281,6 @@ function airlineDBService (string airline, string departureDate, string arrivalD
         flight.rom = i.rom;
         flight.price = i.price;
     }
-    log:printDebug("airlineDBService response : " );
+    log:printDebug("airlineDBService response : ");
     return <json> flight but {error => {}};
 }

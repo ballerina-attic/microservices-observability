@@ -25,7 +25,7 @@ endpoint http:Client clientEP {
 // Function to test the Travel agency service
 @test:Config
 function testTravelAgencyService () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
 
     // Request Payload

@@ -32,7 +32,7 @@ endpoint http:Client clientEP {
 // Function to test resource 'elizabeth'
 @test:Config
 function testResourceElizabeth () {
-    // Initialize the empty http requests and responses
+    // Initialize the empty http request
     http:Request req;
 
     // Set request payload
