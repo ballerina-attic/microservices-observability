@@ -19,8 +19,8 @@ import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
-    "ArrivalDate": "2007-11-06",
-    "DepartureDate": "2007-11-06",
+    "ArrivalDate": "2018-11-06",
+    "DepartureDate": "2018-11-06",
     "From": "CMB",
     "To": "DXB"
 };
@@ -33,18 +33,14 @@ endpoint http:Client clientEP {
 // Function to test resource 'flightQatar'
 @test:Config
 function testResourceFlightQatar () {
-    // Initialize the empty http request
-    http:Request req;
-    // Set request payload
-    req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP->post("/qatarAirways", req);
+    http:Response response = check clientEP->post("/qatarAirways", requestPayload);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");
     // Check whether the response is as expected
-    string expected = "{\"flightNo\":3, \"airline\":\"Qatar\", \"arrivalDate\":\"2007-11-06+05:30\", " + 
-        "\"departureDate\":\"2007-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":300}";
+    string expected = "{\"flightNo\":3, \"airline\":\"Qatar\", \"arrivalDate\":\"2018-11-06+05:30\", " + 
+        "\"departureDate\":\"2018-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":300}";
     json resPayload = check response.getJsonPayload();
     test:assertEquals(resPayload.toString(), expected, msg = "Response mismatch!");
 }
@@ -52,18 +48,14 @@ function testResourceFlightQatar () {
 // Function to test resource 'flightAsiana'
 @test:Config
 function testResourceFlightAsiana () {
-    // Initialize the empty http request
-    http:Request req;
-    // Set request payload
-    req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP->post("/asiana", req);
+    http:Response response = check clientEP->post("/asiana", requestPayload);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");
     // Check whether the response is as expected
-    string expected = "{\"flightNo\":2, \"airline\":\"Asiana\", \"arrivalDate\":\"2007-11-06+05:30\", " +
-        "\"departureDate\":\"2007-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":200}";
+    string expected = "{\"flightNo\":2, \"airline\":\"Asiana\", \"arrivalDate\":\"2018-11-06+05:30\", " +
+        "\"departureDate\":\"2018-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":200}";
     json resPayload = check response.getJsonPayload();
     test:assertEquals(resPayload.toString(), expected, msg = "Response mismatch!");
 }
@@ -71,18 +63,14 @@ function testResourceFlightAsiana () {
 // Function to test resource 'flightEmirates'
 @test:Config
 function testResourceFlightEmirates () {
-    // Initialize the empty http request
-    http:Request req;
-    // Set request payload
-    req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP->post("/emirates", req);
+    http:Response response = check clientEP->post("/emirates", requestPayload);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Airline reservation service did not respond with 200 OK signal!");
     // Check whether the response is as expected
-    string expected = "{\"flightNo\":1, \"airline\":\"Emirates\", \"arrivalDate\":\"2007-11-06+05:30\", " + 
-        "\"departureDate\":\"2007-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":100}";
+    string expected = "{\"flightNo\":1, \"airline\":\"Emirates\", \"arrivalDate\":\"2018-11-06+05:30\", " + 
+        "\"departureDate\":\"2018-11-06+05:30\", \"to\":\"DXB\", \"rom\":\"CMB\", \"price\":100}";
     json resPayload = check response.getJsonPayload();
     test:assertEquals(resPayload.toString(), expected, msg = "Response mismatch!");
 }

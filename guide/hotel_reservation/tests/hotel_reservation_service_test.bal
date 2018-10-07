@@ -19,8 +19,8 @@ import ballerina/test;
 
 // Common request Payload
 json requestPayload = {
-    ArrivalDate: "2007-11-06",
-    DepartureDate: "2007-11-06",
+    ArrivalDate: "2018-11-06",
+    DepartureDate: "2018-11-06",
     Location: "Changi"
 };
 
@@ -32,19 +32,14 @@ endpoint http:Client clientEP {
 // Function to test resource 'elizabeth'
 @test:Config
 function testResourceElizabeth () {
-    // Initialize the empty http request
-    http:Request req;
-
-    // Set request payload
-    req.setJsonPayload(requestPayload);
     // Send a 'post' request and obtain the response
-    http:Response response = check clientEP->post("/elizabeth", req);
+    http:Response response = check clientEP->post("/elizabeth", requestPayload);
     // Expected response code is 200
     test:assertEquals(response.statusCode, 200,
         msg = "Hotel reservation service did not respond with 200 OK signal!");
     // Check whether the response is as expected
-    string expected = "{\"HotelName\":\"Elizabeth\", \"FromDate\":\"2007-11-06\", " +
-        "\"ToDate\":\"2007-11-06\", \"DistanceToLocation\":2}";
+    string expected = "{\"HotelName\":\"Elizabeth\", \"FromDate\":\"2018-11-06\", " +
+        "\"ToDate\":\"2018-11-06\", \"DistanceToLocation\":2}";
     json resPayload = check response.getJsonPayload();
     test:assertEquals(resPayload.toString(), expected, msg = "Response mismatch!");
 }

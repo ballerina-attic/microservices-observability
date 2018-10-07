@@ -2,11 +2,11 @@
 
 # Observing Ballerina Microservices
 
-Observability of services is useful to retrieve internal information for easier troubleshooting and system status analysis. Ballerina allows to observe its services using Monitoring, Logging and Distributed tracing methods, with the use of other external tools.
+Observability of services is useful to retrieve internal information for easier troubleshooting and system status analysis. Ballerina allows you to observe its services via monitoring, logging and distributed tracing methods that use external tools.
 
 Ballerina observability can be categorized into two types as,
-- Default observability - Each Ballerina service can expose its internal information just by enabling the built-in observability. (Eg : Network call duration)
-- User-defined observability - More specific data can be retrieved by using user-defined observability. (Eg : Function execution time) This requires the explicit import of the package `ballerina/observe`.
+- Default observability - Each Ballerina service can expose its internal information just by enabling the built-in observability. (e.g. network call duration)
+- User-defined observability - More specific data can be retrieved by using user-defined observability. (e.g. function execution time) This requires the explicit import of the package `ballerina/observe`.
 
 > This guide is a modification of the [Parallel Service Orchestration guide](https://github.com/ballerina-guides/parallel-service-orchestration) to explain a real-world use case of Ballerina observability.
 
@@ -81,7 +81,7 @@ Note that we are overridng the Prometheus port by passing the parameter `-e b7a.
 
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   '{"ArrivalDate":"2018-11-06", "DepartureDate":"2018-11-06", "From":"CMB", "To":"DXB", 
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json" 
 ```
@@ -92,20 +92,20 @@ Note that we are overridng the Prometheus port by passing the parameter `-e b7a.
    HTTP/1.1 200 OK
     {
         "Flight":{
-            "flightNo":1,"airline":"Emirates","arrivalDate":"2007-11-06+05:30",
-            "departureDate":"2007-11-06+05:30","to":"DXB","rom":"CMB","price":100
+            "flightNo":1,"airline":"Emirates","arrivalDate":"2018-11-06+05:30",
+            "departureDate":"2018-11-06+05:30","to":"DXB","rom":"CMB","price":100
         },
         "Hotel":{
-            "HotelName":"Elizabeth","FromDate":"2007-11-06","ToDate":"2007-11-06","DistanceToLocation":2
+            "HotelName":"Elizabeth","FromDate":"2018-11-06","ToDate":"2018-11-06","DistanceToLocation":2
         },
         "Vehicle":{
-            "company":"Sixt","arrivalDate":"2007-11-06+05:30","departureDate":"2007-11-06+05:30",
+            "company":"Sixt","arrivalDate":"2018-11-06+05:30","departureDate":"2018-11-06+05:30",
             "vehicleType":"Car","price":30
         }
     }
 ```
 ## Observability 
-Ballerina is by default observable. Meaning, you can easily observe your services, resources, etc. Observability configurations are defined in the `ballerina.conf` file. A sample configuration file can be found in `microservices-observability/guide/` directory.
+Ballerina comes with support for observability built-in to the language. Observability is disabled by default. Observability configurations are defined in the `ballerina.conf` file. A sample configuration file can be found in `microservices-observability/guide/` directory.
 ```ballerina
 [b7a.log]
 level="DEBUG"
@@ -307,7 +307,7 @@ NOTE: You may need to add `store` index pattern to kibana visualization tool to 
 All four Ballerina services push tracers to Jaeger on port `5775`. Send a request to the travel agency service and check the Jaeger results.
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   '{"ArrivalDate":"2018-11-06", "DepartureDate":"2018-11-06", "From":"CMB", "To":"DXB", 
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json" 
 ```
@@ -472,7 +472,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
  
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   '{"ArrivalDate":"2018-11-06", "DepartureDate":"2018-11-06", "From":"CMB", "To":"DXB", 
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:9090/travel/arrangeTour" -H "Content-Type:application/json"
 ```
@@ -558,7 +558,7 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
 Node Port:
 ```bash
    curl -v -X POST -d \
-   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   '{"ArrivalDate":"2018-11-06", "DepartureDate":"2018-11-06", "From":"CMB", "To":"DXB", 
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://localhost:<Node_Port>/travel/arrangeTour" -H "Content-Type:application/json"  
 ```
@@ -573,7 +573,7 @@ Add `/etc/hosts` entry to match hostname.
 Access the service 
 ```bash 
    curl -v -X POST -d \
-   '{"ArrivalDate":"2007-11-06", "DepartureDate":"2007-11-06", "From":"CMB", "To":"DXB", 
+   '{"ArrivalDate":"2018-11-06", "DepartureDate":"2018-11-06", "From":"CMB", "To":"DXB", 
    "VehicleType":"Car", "Location":"Changi"}' \
    "http://ballerina.guides.io/travel/arrangeTour" -H "Content-Type:application/json"  
 ```

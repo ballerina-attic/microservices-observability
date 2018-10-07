@@ -29,9 +29,9 @@ CREATE TABLE `FLIGHTS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `FLIGHTS` (`airline`, `arrivalDate`, `departureDate`, `dest`, `rom`, `price`) VALUES
-('Emirates', '2007-11-06', '2007-11-06', 'DXB', 'CMB', 100),
-('Asiana', '2007-11-06', '2007-11-06', 'DXB', 'CMB', 200),
-('Qatar', '2007-11-06', '2007-11-06', 'DXB', 'CMB', 300);
+('Emirates', '2018-11-06', '2018-11-06', 'DXB', 'CMB', 100),
+('Asiana', '2018-11-06', '2018-11-06', 'DXB', 'CMB', 200),
+('Qatar', '2018-11-06', '2018-11-06', 'DXB', 'CMB', 300);
 
 CREATE TABLE `CARS` (
   `company` varchar(100),
@@ -43,6 +43,6 @@ CREATE TABLE `CARS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `CARS` (`company`, `arrivalDate`, `departureDate`, `vehicleType`, `price`) VALUES
-('DriveSG', '2007-11-06', '2007-11-06', 'Car', 10),
-('DreamCar', '2007-11-06', '2007-11-06', 'Car', 20),
-('Sixt', '2007-11-06', '2007-11-06', 'Car', 30);
+('DriveSG', '2018-11-06', '2018-11-06', 'Car', 10),
+('DreamCar', '2018-11-06', '2018-11-06', 'Car', 20),
+('Sixt', '2018-11-06', '2018-11-06', 'Car', 30);

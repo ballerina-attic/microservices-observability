@@ -281,6 +281,9 @@ function airlineDBService (string airline, string departureDate, string arrivalD
         flight.rom = i.rom;
         flight.price = i.price;
     }
-    log:printDebug("airlineDBService response : ");
+    log:printDebug("airlineDBService response : " + check <string> <json> flight but {error => {}});
+    json gg = {ff:"vv"};
+    string hh = check <string> gg;
+    log:printDebug("sss" + check <string>gg);
     return <json> flight but {error => {}};
 }

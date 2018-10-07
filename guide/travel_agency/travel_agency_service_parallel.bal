@@ -138,36 +138,27 @@ service<http:Service> travelAgencyService bind travelAgencyEP {
         fork {
             // Worker to communicate with airline 'Qatar Airways'
             worker qatarWorker {
-                http:Request outReq;
-                // Out request payload
-                outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /qatarAirways");
                 // Send a POST request to 'Qatar Airways' and get the results
-                http:Response respWorkerQatar = check airlineEP->post("/qatarAirways", outReq);
+                http:Response respWorkerQatar = check airlineEP->post("/qatarAirways", untaint flightPayload);
                 // Reply to the join block from this worker - Send the response from 'Qatar Airways'
                 respWorkerQatar->fork;
             }
 
             // Worker to communicate with airline 'Asiana'
             worker asianaWorker {
-                http:Request outReq;
-                // Out request payload
-                outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /asiana");
                 // Send a POST request to 'Asiana' and get the results
-                http:Response respWorkerAsiana = check airlineEP->post("/asiana", outReq);
+                http:Response respWorkerAsiana = check airlineEP->post("/asiana", untaint flightPayload);
                 // Reply to the join block from this worker - Send the response from 'Asiana'
                 respWorkerAsiana->fork;
             }
 
             // Worker to communicate with airline 'Emirates'
             worker emiratesWorker {
-                http:Request outReq;
-                // Out request payload
-                outReq.setJsonPayload(untaint flightPayload);
                 log:printDebug("Sending request to : /emirates");
                 // Send a POST request to 'Emirates' and get the results
-                http:Response respWorkerEmirates = check airlineEP->post("/emirates", outReq);
+                http:Response respWorkerEmirates = check airlineEP->post("/emirates", untaint flightPayload);
                 // Reply to the join block from this worker - Send the response from 'Emirates'
                 respWorkerEmirates->fork;
             }
